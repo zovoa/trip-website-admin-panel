@@ -46,7 +46,7 @@ const NotFound = () => {
             Page Not Built yet!!
           </h2>
           <p className="text-gray-600 mb-6">
-            The page you're looking for doesn't exist or has been moved
+            The page you're looking for doesn't exist or has been removed
             <br />
             <code className="bg-gray-100 px-2 py-1 rounded text-sm mt-2 inline-block">
               {location.pathname}
