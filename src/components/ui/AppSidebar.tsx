@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, 
@@ -14,13 +13,15 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/', active: true },
+    { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
     { icon: Users, label: 'User Management', href: '/users' },
     { icon: Building, label: 'Properties', href: '/properties' },
     { icon: Car, label: 'Vehicle Partners', href: '/vehicles' },
@@ -34,7 +35,7 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "bg-white border-r border-gray-200 transition-all duration-300 flex flex-col",
+      "bg-white border-r border-gray-200 transition-all duration-300 flex flex-col min-h-screen",
       collapsed ? "w-16" : "w-64"
     )}>
       {/* Header */}
@@ -48,6 +49,7 @@ const Sidebar = () => {
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+          aria-label="Toggle sidebar"
         >
           {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
         </button>
@@ -56,22 +58,25 @@ const Sidebar = () => {
       {/* Menu Items */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-          {menuItems.map((item, index) => (
-            <li key={index}>
-              <a
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
-                  item.active 
-                    ? "bg-blue-50 text-blue-700 border border-blue-200" 
-                    : "text-gray-700 hover:bg-gray-50"
-                )}
-              >
-                <item.icon size={20} />
-                {!collapsed && <span className="font-medium">{item.label}</span>}
-              </a>
-            </li>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <li key={item.href}>
+                <Link
+                  to={item.href}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+                    isActive
+                      ? "bg-blue-50 text-blue-700 border border-blue-200"
+                      : "text-gray-700 hover:bg-gray-50"
+                  )}
+                >
+                  <item.icon size={20} />
+                  {!collapsed && <span className="font-medium">{item.label}</span>}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
